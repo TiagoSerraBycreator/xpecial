@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 
 // Email configuration
 const transporter = nodemailer.createTransport({
@@ -368,7 +369,6 @@ export const sendTemporaryPasswordEmail = async (
 
 // Função para gerar token de verificação único
 export const generateVerificationToken = (): string => {
-  const crypto = require('crypto');
   return crypto.randomBytes(32).toString('hex');
 };
 

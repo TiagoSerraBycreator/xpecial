@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CheckCircle, XCircle, Mail, Loader2, RefreshCw } from 'lucide-react'
-import { MainLayout } from '@/components/layout/main-layout'
+import MainLayout from '@/components/layout/main-layout'
 
 type VerificationStatus = 'loading' | 'success' | 'error' | 'already-verified'
 
