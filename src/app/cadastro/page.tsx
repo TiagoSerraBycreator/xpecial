@@ -186,10 +186,10 @@ export default function CadastroPage() {
       case 3:
         return !!(formData.state && formData.city)
       case 4:
-        const hasRequiredFields = formData.name && formData.email && formData.password && formData.confirmPassword && formData.state && formData.city
-        const hasCompanyFields = userType === 'COMPANY' ? (formData.companyName && formData.sector) : true
-        const passwordsMatch = formData.password === formData.confirmPassword
-        const passwordValid = formData.password.length >= 6
+        const hasRequiredFields = Boolean(formData.name && formData.email && formData.password && formData.confirmPassword && formData.state && formData.city)
+        const hasCompanyFields = Boolean(userType === 'COMPANY' ? (formData.companyName && formData.sector) : true)
+        const passwordsMatch = Boolean(formData.password === formData.confirmPassword)
+        const passwordValid = Boolean(formData.password.length >= 6)
         return acceptTerms && !Boolean(emailError) && hasRequiredFields && hasCompanyFields && passwordsMatch && passwordValid
       default:
         return false
