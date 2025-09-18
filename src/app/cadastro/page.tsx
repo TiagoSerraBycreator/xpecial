@@ -190,7 +190,7 @@ export default function CadastroPage() {
         const hasCompanyFields = userType === 'COMPANY' ? (formData.companyName && formData.sector) : true
         const passwordsMatch = formData.password === formData.confirmPassword
         const passwordValid = formData.password.length >= 6
-        return acceptTerms && !emailError && hasRequiredFields && hasCompanyFields && passwordsMatch && passwordValid
+        return acceptTerms && !Boolean(emailError) && hasRequiredFields && hasCompanyFields && passwordsMatch && passwordValid
       default:
         return false
     }
