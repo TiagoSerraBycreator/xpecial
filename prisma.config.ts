@@ -1,5 +1,3 @@
-import { defineConfig } from 'prisma/config'
-
-export default defineConfig({
+export default {
   seed: 'tsx prisma/seed.ts'
-})
+}
