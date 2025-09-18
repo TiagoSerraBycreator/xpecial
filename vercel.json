@@ -5,20 +5,22 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "env": {
-    "DATABASE_URL": "@database_url",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "SMTP_HOST": "@smtp_host",
-    "SMTP_PORT": "@smtp_port",
-    "SMTP_USER": "@smtp_user",
-    "SMTP_PASSWORD": "@smtp_password",
-    "SMTP_FROM": "@smtp_from"
+    "DATABASE_URL": "postgresql://postgres:Desiree2205%2E01@db.fglvnmdjvsuqjicefddg.supabase.co:5432/postgres?schema=public",
+    "NEXTAUTH_URL": "https://$VERCEL_URL",
+    "NEXTAUTH_SECRET": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6",
+    "SMTP_HOST": "smtp.gmail.com",
+    "SMTP_PORT": "587",
+    "SMTP_USER": "tiago.serra@bycreator.net",
+    "SMTP_PASSWORD": "dtme ckyg jszw xloc",
+    "SMTP_FROM": "tiago.serra@bycreator.net",
+    "SUPABASE_URL": "https://fglvnmdjvsuqjicefddg.supabase.co",
+    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbHZubWRqdnN1cWppY2VmZGRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyMTM2MzgsImV4cCI6MjA3Mzc4OTYzOH0.f8-cWNn5-xIYms5980dAQ3WBCfJsR8_iToynHHXv_ow"
   },
   "build": {
     "env": {
-      "DATABASE_URL": "@database_url",
-      "NEXTAUTH_URL": "@nextauth_url",
-      "NEXTAUTH_SECRET": "@nextauth_secret"
+      "DATABASE_URL": "postgresql://postgres:Desiree2205%2E01@db.fglvnmdjvsuqjicefddg.supabase.co:5432/postgres?schema=public",
+      "NEXTAUTH_URL": "https://$VERCEL_URL",
+      "NEXTAUTH_SECRET": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6"
     }
   },
   "functions": {
