@@ -4,23 +4,23 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { prisma } from './prisma'
 import bcrypt from 'bcryptjs'
 
+console.log('🔧 Carregando configuração do NextAuth...')
+
 export const authOptions: NextAuthOptions = {
-  debug: process.env.NODE_ENV === 'development',
+  debug: true,
   logger: {
     error(code, metadata) {
-      console.error('NextAuth Error:', code, metadata)
+      console.error('🔥 NextAuth Error:', code, metadata)
     },
     warn(code) {
-      console.warn('NextAuth Warning:', code)
+      console.warn('⚠️ NextAuth Warning:', code)
     },
     debug(code, metadata) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log('NextAuth Debug:', code, metadata)
-      }
+      console.log('🐛 NextAuth Debug:', code, metadata)
     }
   },
   secret: process.env.NEXTAUTH_SECRET,
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma), // Removido temporariamente para testar
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -30,60 +30,49 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         console.log('🚀 AUTHORIZE FUNCTION CALLED!')
-        console.log('🔐 Tentativa de login:', { email: credentials?.email })
+        console.log('🔍 Credentials received:', credentials ? { email: credentials.email, hasPassword: !!credentials.password } : 'null')
         
-        if (!credentials?.email || !credentials?.password) {
-          console.log('❌ Credenciais incompletas')
-          return null
-        }
-
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
-          },
-          include: {
-            candidate: true,
-            company: true
+        try {
+          console.log('🔍 Verificando instância do Prisma:', !!prisma)
+          
+          if (!credentials?.email || !credentials?.password) {
+            console.log('❌ Credenciais inválidas ou ausentes')
+            return null
           }
-        })
 
-        if (!user) {
-          console.log('❌ Usuário não encontrado:', credentials.email)
+          console.log('🔍 Iniciando busca pelo usuário:', credentials.email)
+          
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email }
+          })
+
+          console.log('🔍 Resultado da busca:', !!user)
+          console.log('🔍 Detalhes do usuário:', user ? { id: user.id, email: user.email, role: user.role, isActive: user.isActive } : 'null')
+
+          if (!user || !user.isActive) {
+            console.log('❌ Usuário não encontrado ou inativo')
+            return null
+          }
+
+          console.log('🔍 Verificando senha...')
+          const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
+          console.log('🔍 Senha válida:', isPasswordValid)
+
+          if (!isPasswordValid) {
+            console.log('❌ Senha inválida')
+            return null
+          }
+
+          console.log('✅ Login bem-sucedido!')
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          }
+        } catch (error) {
+          console.error('💥 Erro na função authorize:', error)
           return null
-        }
-
-        console.log('✅ Usuário encontrado:', { id: user.id, email: user.email, role: user.role })
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password
-        )
-
-        if (!isPasswordValid) {
-          console.log('❌ Senha inválida para:', credentials.email)
-          return null
-        }
-
-        // Check if email is verified
-        if (!user.isEmailVerified) {
-          console.log('❌ Email não verificado para:', credentials.email)
-          throw new Error('Email não verificado. Verifique seu email para ativar sua conta.')
-        }
-
-        // Check if account is active
-        if (!user.isActive) {
-          console.log('❌ Conta inativa para:', credentials.email)
-          throw new Error('Conta inativa. Entre em contato com o suporte.')
-        }
-
-        console.log('✅ Login bem-sucedido:', credentials.email)
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          candidateId: user.candidate?.id,
-          companyId: user.company?.id
         }
       }
     })
