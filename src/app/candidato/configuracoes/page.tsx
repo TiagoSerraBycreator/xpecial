@@ -119,7 +119,7 @@ export default function CandidateConfigPage() {
             </CardHeader>
             <CardContent>
               <AccountActivity 
-                isActive={session?.user?.isActive ?? true}
+                isActive={true}
                 onActivateAccount={() => handleAccountActivity('activate')}
                 onDeactivateAccount={() => handleAccountActivity('deactivate')}
                 onDeleteAccount={() => handleAccountActivity('delete')}

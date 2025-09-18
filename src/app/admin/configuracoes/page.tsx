@@ -619,7 +619,7 @@ export default function ConfiguracoesPage() {
             <h3 className="text-sm font-medium text-blue-800">Teste de Configuração SMTP</h3>
             <p className="text-sm text-blue-700 mt-1">
               Use esta seção para testar se as configurações de email SMTP estão funcionando corretamente. 
-              Certifique-se de configurar primeiro as configurações de email na aba "Email".
+              Certifique-se de configurar primeiro as configurações de email na aba &quot;Email&quot;.
             </p>
           </div>
         </div>

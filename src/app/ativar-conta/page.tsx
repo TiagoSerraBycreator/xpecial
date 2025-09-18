@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -10,7 +10,7 @@ import MainLayout from '@/components/layout/main-layout'
 
 type VerificationStatus = 'loading' | 'success' | 'error' | 'already-verified' | 'expired' | 'invalid' | 'activation-failed'
 
-export default function AtivarContaPage() {
+function AtivarContaContent() {
   const [status, setStatus] = useState<VerificationStatus>('loading')
   const [message, setMessage] = useState('')
   const [details, setDetails] = useState('')
@@ -307,5 +307,26 @@ export default function AtivarContaPage() {
         </Card>
       </div>
     </MainLayout>
+  )
+}
+
+export default function AtivarContaPage() {
+  return (
+    <Suspense fallback={
+      <MainLayout>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <Card className="w-full max-w-md">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+                <span className="ml-2">Carregando...</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </MainLayout>
+    }>
+      <AtivarContaContent />
+    </Suspense>
   )
 }

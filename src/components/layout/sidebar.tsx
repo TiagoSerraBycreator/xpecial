@@ -272,7 +272,7 @@ export default function Sidebar({ isExpanded, setIsExpanded, customMenuItems }: 
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {menuItems.map((item) => {
             const Icon = item.icon
-            const isActive = item.isActive !== undefined ? item.isActive : isActiveLink(item.href)
+            const isActive = 'isActive' in item && item.isActive !== undefined ? item.isActive : isActiveLink(item.href)
             
             return (
               <Link

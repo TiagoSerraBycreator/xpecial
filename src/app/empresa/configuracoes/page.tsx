@@ -118,8 +118,8 @@ export default function CompanyConfigPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <AccountActivity 
-                isActive={session?.user?.isActive ?? true}
+              <AccountActivity
+                isActive={true}
                 onActivateAccount={() => handleAccountActivity('activate')}
                 onDeactivateAccount={() => handleAccountActivity('deactivate')}
                 onDeleteAccount={() => handleAccountActivity('delete')}

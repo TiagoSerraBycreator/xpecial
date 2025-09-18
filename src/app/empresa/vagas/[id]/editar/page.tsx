@@ -808,7 +808,7 @@ export default function EditJob({ params }: { params: Promise<{ id: string }> })
                         {skill}
                         <button
                           type="button"
-                          onClick={() => removeSkill(index)}
+                          onClick={() => removeSkill(skill)}
                           className="ml-2 text-blue-600 hover:text-blue-800"
                         >
                           <X className="h-3 w-3" />
@@ -852,7 +852,7 @@ export default function EditJob({ params }: { params: Promise<{ id: string }> })
                         {language}
                         <button
                           type="button"
-                          onClick={() => removeLanguage(index)}
+                          onClick={() => removeLanguage(language)}
                           className="ml-2 text-green-600 hover:text-green-800"
                         >
                           <X className="h-3 w-3" />

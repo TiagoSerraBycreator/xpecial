@@ -2,8 +2,8 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { Send, ArrowLeft, Building, Search, MessageCircle, Clock } from 'lucide-react'
+import { useEffect, useState, Suspense } from 'react'
+import { Send, ArrowLeft, Building, Search, MessageCircle, Clock, Loader2 } from 'lucide-react'
 
 interface Message {
   id: string
@@ -31,7 +31,7 @@ interface Conversation {
   messages: Message[]
 }
 
-export default function CandidateMessages() {
+function CandidateMessagesContent() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -386,5 +386,17 @@ export default function CandidateMessages() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function CandidateMessages() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    }>
+      <CandidateMessagesContent />
+    </Suspense>
   )
 }

@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -13,9 +13,7 @@ import { AdminCard } from '@/components/ui/admin-card'
 const userEditSchema = z.object({
   name: z.string().min(2, 'Nome deve ter pelo menos 2 caracteres'),
   email: z.string().email('Email inválido'),
-  role: z.enum(['ADMIN', 'COMPANY', 'CANDIDATE'], {
-    required_error: 'Selecione um tipo de usuário'
-  }),
+  role: z.enum(['ADMIN', 'COMPANY', 'CANDIDATE']),
   isActive: z.boolean(),
   isEmailVerified: z.boolean(),
   newPassword: z.string().optional(),
@@ -45,9 +43,10 @@ interface User {
   createdAt: string
 }
 
-export default function EditUser({ params }: { params: { id: string } }) {
+export default function EditUser({ params }: { params: Promise<{ id: string }> }) {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const resolvedParams = use(params)
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -76,11 +75,12 @@ export default function EditUser({ params }: { params: { id: string } }) {
     }
 
     fetchUserDetails()
-  }, [session, status, router, params.id])
+  }, [session, status, router, resolvedParams.id])
 
   const fetchUserDetails = async () => {
     try {
-      const response = await fetch(`/api/admin/users/${params.id}`)
+      setLoading(true)
+      const response = await fetch(`/api/admin/users/${resolvedParams.id}`)
       if (response.ok) {
         const userData = await response.json()
         setUser(userData)
@@ -120,7 +120,7 @@ export default function EditUser({ params }: { params: { id: string } }) {
         updateData.password = data.newPassword
       }
 
-      const response = await fetch(`/api/admin/users/${params.id}`, {
+      const response = await fetch(`/api/admin/users/${resolvedParams.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ export default function EditUser({ params }: { params: { id: string } }) {
       if (response.ok) {
         setMessage({ type: 'success', text: 'Usuário atualizado com sucesso!' })
         setTimeout(() => {
-          router.push(`/admin/users/${params.id}`)
+          router.push(`/admin/users/${resolvedParams.id}`)
         }, 2000)
       } else {
         const errorData = await response.json()

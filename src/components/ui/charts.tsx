@@ -266,8 +266,9 @@ export function PieChart({ data, title, size = 300 }: PieChartProps) {
               d={slice.pathData}
               fill={slice.color}
               className="hover:opacity-80 transition-opacity cursor-pointer"
-              title={`${slice.label}: ${slice.value} (${slice.percentage}%)`}
-            />
+            >
+              <title>{`${slice.label}: ${slice.value} (${slice.percentage}%)`}</title>
+            </path>
           ))}
         </svg>
         
