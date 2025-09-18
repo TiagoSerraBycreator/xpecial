@@ -127,27 +127,39 @@ export default function CadastroPage() {
         body: JSON.stringify({ email })
       })
 
-      const text = await response.text()
-      let data = {}
+      let data: any = {}
       
-      if (text) {
-        try {
+      try {
+        const text = await response.text()
+        if (text) {
           data = JSON.parse(text)
-        } catch (parseError) {
-          console.error('Erro ao fazer parse do JSON:', parseError)
-          setEmailError('Erro ao verificar email')
-          return
         }
+      } catch (parseError) {
+        console.error('Erro ao fazer parse do JSON:', parseError)
+        setEmailError('Erro de comunicação com o servidor')
+        return
       }
       
-      if (!response.ok) {
-        setEmailError((data as any).error || 'Email já cadastrado')
-      } else {
+      if (response.status === 400) {
+        // Email já existe
+        setEmailError(data.error || 'Email já cadastrado')
+      } else if (response.status === 200) {
+        // Email disponível
         setEmailError('')
+      } else if (response.status === 500) {
+        // Erro interno do servidor
+        setEmailError('Erro interno do servidor. Tente novamente.')
+      } else {
+        // Outros erros
+        setEmailError(data.error || 'Erro ao verificar email')
       }
     } catch (error) {
       console.error('Erro ao verificar email:', error)
-      setEmailError('Erro ao verificar email')
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        setEmailError('Erro de conexão. Verifique sua internet.')
+      } else {
+        setEmailError('Erro inesperado. Tente novamente.')
+      }
     } finally {
       setIsCheckingEmail(false)
     }
