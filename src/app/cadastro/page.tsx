@@ -174,7 +174,11 @@ export default function CadastroPage() {
       case 3:
         return !!(formData.state && formData.city)
       case 4:
-        return acceptTerms && !emailError
+        const hasRequiredFields = formData.name && formData.email && formData.password && formData.confirmPassword && formData.state && formData.city
+        const hasCompanyFields = userType === 'COMPANY' ? (formData.companyName && formData.sector) : true
+        const passwordsMatch = formData.password === formData.confirmPassword
+        const passwordValid = formData.password.length >= 6
+        return acceptTerms && !emailError && hasRequiredFields && hasCompanyFields && passwordsMatch && passwordValid
       default:
         return false
     }
@@ -197,6 +201,7 @@ export default function CadastroPage() {
     setIsLoading(true)
     setError('')
 
+    // Validações básicas
     if (!acceptTerms) {
       setError('Você deve aceitar os termos de uso e política de privacidade')
       setIsLoading(false)
@@ -205,6 +210,12 @@ export default function CadastroPage() {
 
     if (emailError) {
       setError('Corrija os erros no formulário antes de continuar')
+      setIsLoading(false)
+      return
+    }
+
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+      setError('Preencha todos os campos obrigatórios')
       setIsLoading(false)
       return
     }
@@ -221,16 +232,37 @@ export default function CadastroPage() {
       return
     }
 
+    if (!userType) {
+      setError('Selecione o tipo de conta')
+      setIsLoading(false)
+      return
+    }
+
+    if (!formData.state || !formData.city) {
+      setError('Selecione sua localização')
+      setIsLoading(false)
+      return
+    }
+
+    // Validações específicas para empresa
+    if (userType === 'COMPANY' && (!formData.companyName || !formData.sector)) {
+      setError('Preencha todos os campos obrigatórios da empresa')
+      setIsLoading(false)
+      return
+    }
+
     try {
+      const requestData = {
+        ...formData,
+        role: userType
+      }
+
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          ...formData,
-          role: userType
-        })
+        body: JSON.stringify(requestData)
       })
 
       const data = await response.json()
