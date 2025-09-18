@@ -1,0 +1,310 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    String     @id @default(cuid())
+  email                 String     @unique
+  password              String
+  name                  String
+  role                  UserRole   @default(CANDIDATE)
+  isActive              Boolean    @default(false) // Mudado para false por padrão
+  isEmailVerified       Boolean    @default(false)
+  emailVerificationToken String?
+  emailVerificationExpiry DateTime?
+  resetToken            String?
+  resetTokenExpiry      DateTime?
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  candidate             Candidate?
+  company               Company?
+  sentMessages          Message[]  @relation("SentMessages")
+  receivedMessages      Message[]  @relation("ReceivedMessages")
+  accounts              Account[]
+  sessions              Session[]
+
+  @@map("users")
+}
+
+model Candidate {
+  id             String           @id @default(cuid())
+  userId         String           @unique
+  phone          String?
+  city           String?
+  state          String?
+  skills         String?
+  languages      String?
+  availability   String?
+  profilePhoto   String?
+  videoResumeUrl String?
+  profileVideoUrl String?
+  dateOfBirth    DateTime?
+  description    String?
+  aboutMe        String?
+  experience     String?
+  education      String?
+  isActive       Boolean          @default(true)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  applications   Application[]
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  certificates   Certificate[]
+  courseProgress CourseProgress[]
+
+  @@map("candidates")
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  name        String
+  slug        String   @unique
+  email       String   @unique
+  logo        String?
+  sector      String?
+  description String?
+  website     String?
+  phone       String?
+  address     String?
+  city        String?
+  state       String?
+  foundedYear String?
+  employeeCount String?
+  mission     String?
+  vision      String?
+  values      String?
+  isApproved  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobs        Job[]
+
+  @@map("companies")
+}
+
+model Job {
+  id                   String        @id @default(cuid())
+  companyId            String
+  title                String
+  description          String
+  requirements         String?
+  responsibilities     String?
+  benefits             String?
+  location             String?
+  workMode             WorkMode      @default(PRESENCIAL)
+  type                 JobType       @default(FULL_TIME)
+  level                JobLevel      @default(PLENO)
+  salaryMin            Float?
+  salaryMax            Float?
+  city                 String?
+  state                String?
+  sector               String?
+  skills               String?
+  experienceYears      Int?
+  education            String?
+  languages            String?
+  recruitmentVideoUrl  String?
+  status               JobStatus     @default(PENDING)
+  isActive             Boolean       @default(true)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  applications         Application[]
+  company              Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("jobs")
+}
+
+model Application {
+  id          String            @id @default(cuid())
+  candidateId String
+  jobId       String
+  message     String?
+  whatsapp    String?
+  consent     Boolean           @default(false)
+  status      ApplicationStatus @default(APPLIED)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  candidate   Candidate         @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([candidateId, jobId])
+  @@map("applications")
+}
+
+model Course {
+  id           String           @id @default(cuid())
+  title        String
+  description  String
+  content      String
+  duration     Int
+  isActive     Boolean          @default(true)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  certificates Certificate[]
+  progress     CourseProgress[]
+
+  @@map("courses")
+}
+
+model CourseProgress {
+  id          String    @id @default(cuid())
+  candidateId String
+  courseId    String
+  progress    Float     @default(0)
+  isCompleted Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([candidateId, courseId])
+  @@map("course_progress")
+}
+
+model Certificate {
+  id          String    @id @default(cuid())
+  candidateId String
+  courseId    String
+  code        String    @unique
+  issuedAt    DateTime  @default(now())
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("certificates")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@map("notifications")
+}
+
+model SystemConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  category  String   @default("general")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("system_configs")
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  content     String
+  senderId    String
+  recipientId String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+enum UserRole {
+  CANDIDATE
+  COMPANY
+  ADMIN
+}
+
+enum WorkMode {
+  PRESENCIAL
+  REMOTO
+  HIBRIDO
+}
+
+enum JobStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PAUSED
+  CLOSED
+}
+
+enum ApplicationStatus {
+  APPLIED
+  SCREENING
+  INTERVIEW
+  HIRED
+  REJECTED
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  FREELANCE
+}
+
+enum JobLevel {
+  JUNIOR
+  PLENO
+  SENIOR
+  LEAD
+  MANAGER
+}
+
+enum NotificationType {
+  APPLICATION_STATUS
+  NEW_APPLICATION
+  COURSE_COMPLETED
+  CERTIFICATE_ISSUED
+  JOB_APPROVED
+  COMPANY_APPROVED
+  NEW_MESSAGE
+}
+
+// NextAuth.js required tables
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
