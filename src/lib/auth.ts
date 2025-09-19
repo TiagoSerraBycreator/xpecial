@@ -7,19 +7,22 @@ import bcrypt from 'bcryptjs'
 console.log('🔧 Carregando configuração do NextAuth...')
 
 export const authOptions: NextAuthOptions = {
-  debug: true,
+  debug: process.env.NODE_ENV === 'development',
   logger: {
     error(code, metadata) {
-      console.error('🔥 NextAuth Error:', code, metadata)
+      console.error('❌ NextAuth Error:', code, metadata)
     },
     warn(code) {
       console.warn('⚠️ NextAuth Warning:', code)
     },
     debug(code, metadata) {
-      console.log('🐛 NextAuth Debug:', code, metadata)
+      if (process.env.NODE_ENV === 'development') {
+        console.log('🔍 NextAuth Debug:', code, metadata)
+      }
     }
   },
   secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true, // Importante para Vercel
   // adapter: PrismaAdapter(prisma), // Removido temporariamente para testar
   providers: [
     CredentialsProvider({
@@ -81,15 +84,14 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt'
   },
   cookies: {
-    // Configuração específica para resolver problema de CSRF em produção
     sessionToken: {
       name: `${process.env.NODE_ENV === 'production' ? '__Secure-' : ''}next-auth.session-token`,
       options: {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined
+        secure: process.env.NODE_ENV === 'production'
+        // Removido domain para funcionar no Vercel
       }
     },
     callbackUrl: {
@@ -98,8 +100,8 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined
+        secure: process.env.NODE_ENV === 'production'
+        // Removido domain para funcionar no Vercel
       }
     },
     csrfToken: {
@@ -113,7 +115,6 @@ export const authOptions: NextAuthOptions = {
     }
   },
   useSecureCookies: process.env.NODE_ENV === "production",
-  skipCSRFCheck: true,
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
