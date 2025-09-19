@@ -1,6 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 <!-- Environment variables configured for Vercel deployment -->
+<!-- Deploy test: protection removed -->
 
 ## Getting Started
 
