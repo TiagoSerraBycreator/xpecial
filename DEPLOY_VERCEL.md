@@ -1,109 +1,106 @@
-# Guia de Deploy no Vercel - Xpecial
+# 🚀 Deploy no Vercel - Guia Completo
 
-## Problemas Corrigidos
+## ✅ Status Atual
+- ✅ **Código**: Commitado e enviado para GitHub
+- ✅ **Login**: Funcionando localmente
+- ✅ **Banco**: Configurado no Supabase
+- ✅ **Scripts**: Prontos para produção
 
-✅ **Erro de importação do MainLayout**: Corrigido import em `verify-email/page.tsx`
-✅ **Erro de require() em email.ts**: Substituído por import ES modules
-✅ **Problemas de build**: Removido `--turbopack` para compatibilidade
-✅ **Configuração do Prisma**: Adicionado script `postinstall` para gerar cliente automaticamente
-✅ **Configuração do Vercel**: Criado `vercel.json` com configurações otimizadas
+## 🔧 Passo a Passo
 
-## Passos para Deploy no Vercel
+### 1. 🌐 Acessar o Vercel
+1. Vá para [vercel.com](https://vercel.com)
+2. Faça login com sua conta GitHub
+3. Clique em **"New Project"**
 
-### 1. Configurar Variáveis de Ambiente no Vercel
+### 2. 📂 Importar Projeto
+1. Conecte seu GitHub se ainda não estiver conectado
+2. Procure pelo repositório **"xpecial"** ou **"TiagoSerraBycreator/xpecial"**
+3. Clique em **"Import"**
 
-No painel do Vercel, configure as seguintes variáveis de ambiente:
+### 3. ⚙️ Configurar Variáveis de Ambiente
+**IMPORTANTE**: Antes de fazer deploy, configure TODAS as variáveis:
 
-```bash
-# Database (Supabase)
-DATABASE_URL=postgresql://postgres:password@db.supabase.co:5432/postgres?schema=public
+#### 🔐 NextAuth
+```
+NEXTAUTH_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
+NEXTAUTH_URL=https://SEU-DOMINIO.vercel.app
+```
 
-# NextAuth.js
-NEXTAUTH_URL=https://seu-dominio.vercel.app
-NEXTAUTH_SECRET=seu-secret-super-seguro-aqui
+#### 🗄️ Database (Supabase)
+```
+DATABASE_URL=postgresql://postgres:Desiree2205%2E01@db.fglvnmdjvsuqjicefddg.supabase.co:5432/postgres?schema=public
+```
 
-# Email (SMTP)
+#### ☁️ Supabase
+```
+SUPABASE_URL=https://fglvnmdjvsuqjicefddg.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbHZubWRqdnN1cWppY2VmZGRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4ODcxMTIsImV4cCI6MjA3MzQ2MzExMn0.QoRdOCG4ERj2M2pRG8RBVTxWZ7EFBhsF4ymgR3DO0qw
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbHZubWRqdnN1cWppY2VmZGRnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Nzg4NzExMiwiZXhwIjoyMDczNDYzMTEyfQ.QoRdOCG4ERj2M2pRG8RBVTxWZ7EFBhsF4ymgR3DO0qw
+```
+
+#### 📧 Email (SMTP)
+```
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=seu-email@gmail.com
-SMTP_PASSWORD=sua-senha-de-app
-SMTP_FROM=seu-email@gmail.com
+SMTP_USER=tiago.serra@bycreator.net
+SMTP_PASSWORD=dtme ckyg jszw xloc
+SMTP_FROM=tiago.serra@bycreator.net
 ```
 
-### 2. Configurar Banco de Dados Supabase
+### 4. 🚀 Deploy
+1. Certifique-se que todas as variáveis foram adicionadas
+2. Clique em **"Deploy"**
+3. Aguarde o build terminar (pode levar alguns minutos)
 
-1. Acesse [supabase.com](https://supabase.com)
-2. Crie um novo projeto
-3. Copie a URL de conexão PostgreSQL
-4. Execute as migrações:
+### 5. 🔄 Atualizar NEXTAUTH_URL
+1. Após o deploy, copie a URL final (ex: `https://xpecial-abc123.vercel.app`)
+2. Vá em **Settings** → **Environment Variables**
+3. Edite a variável `NEXTAUTH_URL` com a URL real
+4. Clique em **"Redeploy"** para aplicar a mudança
 
+### 6. 👤 Criar Usuário Admin
+Execute este comando localmente (conectando ao banco de produção):
 ```bash
-npx prisma db push
+node check-admin-production.js
 ```
 
-### 3. Deploy no Vercel
+## 🧪 Teste Final
 
-1. Conecte seu repositório GitHub ao Vercel
-2. Configure as variáveis de ambiente
-3. O deploy será automático com as configurações do `vercel.json`
+### Credenciais de Teste:
+- **Email**: `admin@xpecial.com`
+- **Senha**: `admin123`
 
-### 4. Configurações Importantes
+### URLs para Testar:
+- **Home**: `https://sua-url.vercel.app`
+- **Login**: `https://sua-url.vercel.app/login`
+- **Admin**: `https://sua-url.vercel.app/admin`
 
-#### vercel.json
-```json
-{
-  "buildCommand": "npm run build",
-  "framework": "nextjs",
-  "installCommand": "npm install",
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 30
-    }
-  }
-}
-```
+## 🔍 Troubleshooting
 
-#### package.json
-```json
-{
-  "scripts": {
-    "build": "next build",
-    "postinstall": "prisma generate"
-  }
-}
-```
+### ❌ Se der erro de build:
+1. Verifique se todas as variáveis foram copiadas corretamente
+2. Certifique-se que não há espaços extras
+3. Verifique se o `NEXTAUTH_URL` está correto
 
-## Verificações Pós-Deploy
+### ❌ Se der erro de banco:
+1. Verifique se o Supabase está ativo
+2. Confirme se a `DATABASE_URL` está correta
+3. Execute `node check-admin-production.js` para testar conexão
 
-1. ✅ Build passa sem erros
-2. ✅ Prisma Client é gerado automaticamente
-3. ✅ APIs funcionam com timeout adequado
-4. ✅ Banco de dados conecta corretamente
-5. ✅ Autenticação NextAuth funciona
-6. ✅ Envio de emails funciona
+### ❌ Se der erro de login:
+1. Verifique se o usuário admin foi criado
+2. Confirme se o `NEXTAUTH_SECRET` está configurado
+3. Teste localmente primeiro
 
-## Troubleshooting
+## 📞 Próximos Passos
 
-### Erro de Build
-- Verifique se todas as importações estão corretas
-- Confirme que não há `require()` em arquivos TypeScript
-- Verifique se o `postinstall` está gerando o Prisma Client
+Após o deploy bem-sucedido:
+1. ✅ Testar login na produção
+2. ✅ Verificar todas as funcionalidades
+3. ✅ Configurar domínio personalizado (opcional)
+4. ✅ Configurar monitoramento (opcional)
 
-### Erro de Database
-- Confirme a URL do banco no Supabase
-- Verifique se as migrações foram aplicadas
-- Teste a conexão localmente primeiro
+---
 
-### Erro de Email
-- Confirme as credenciais SMTP
-- Para Gmail, use senha de app (não a senha normal)
-- Verifique se a autenticação 2FA está ativada
-
-## Status Atual
-
-✅ **Código corrigido e commitado**
-✅ **Build local funcionando**
-✅ **Configurações do Vercel criadas**
-✅ **Guia de deploy documentado**
-
-O projeto está pronto para deploy no Vercel!
+**🎯 Tudo está pronto para o deploy! Siga este guia e me avise se precisar de ajuda.**
