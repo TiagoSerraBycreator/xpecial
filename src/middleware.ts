@@ -16,8 +16,8 @@ export async function middleware(req: NextRequest) {
   }
 
   // Public routes that don't require authentication
-  const publicRoutes = ['/login', '/cadastro', '/cert', '/ativar-conta', '/verify-email', '/forgot-password', '/reset-password']
-  const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route))
+  const publicRoutes = ['/', '/login', '/cadastro', '/cert', '/ativar-conta', '/verify-email', '/forgot-password', '/reset-password']
+  const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route))
   
   // Public company profile routes (empresa/[slug] pattern)
   const isPublicCompanyProfile = /^\/empresa\/[^/]+$/.test(pathname)
