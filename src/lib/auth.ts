@@ -22,7 +22,6 @@ export const authOptions: NextAuthOptions = {
     }
   },
   secret: process.env.NEXTAUTH_SECRET,
-  trustHost: true, // Importante para Vercel
   // adapter: PrismaAdapter(prisma), // Removido temporariamente para testar
   providers: [
     CredentialsProvider({
