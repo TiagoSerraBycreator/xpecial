@@ -12,7 +12,9 @@ NEXTAUTH_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
 
 ### 🗄️ Database (Supabase)
 ```
-DATABASE_URL=postgresql://postgres:Desiree2205%2E01@db.fglvnmdjvsuqjicefddg.supabase.co:5432/postgres?schema=public
+DATABASE_URL=postgresql://postgres.fglvnmdjvsuqjicefddg:Desiree2205.01@aws-0-us-east-1.pooler.supabase.com:6543/postgres
+POSTGRES_PRISMA_URL=postgresql://postgres.fglvnmdjvsuqjicefddg:Desiree2205.01@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connect_timeout=15
+POSTGRES_URL_NON_POOLING=postgresql://postgres.fglvnmdjvsuqjicefddg:Desiree2205.01@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 ```
 
 ### ☁️ Supabase
@@ -20,6 +22,7 @@ DATABASE_URL=postgresql://postgres:Desiree2205%2E01@db.fglvnmdjvsuqjicefddg.supa
 SUPABASE_URL=https://fglvnmdjvsuqjicefddg.supabase.co
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbHZubWRqdnN1cWppY2VmZGRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4ODcxMTIsImV4cCI6MjA3MzQ2MzExMn0.QoRdOCG4ERj2M2pRG8RBVTxWZ7EFBhsF4ymgR3DO0qw
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbHZubWRqdnN1cWppY2VmZGRnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Nzg4NzExMiwiZXhwIjoyMDczNDYzMTEyfQ.QoRdOCG4ERj2M2pRG8RBVTxWZ7EFBhsF4ymgR3DO0qw
+SUPABASE_JWT_SECRET=Desiree2205.01
 ```
 
 ### 📧 Email (SMTP)
