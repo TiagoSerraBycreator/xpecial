@@ -13,6 +13,7 @@ NEXTAUTH_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
 ### 🗄️ Database (Supabase)
 ```
 DATABASE_URL=postgres://postgres.gdblkhmwqytkzmyqttak:07ex7DZbW6YSsjFl@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require&supa=base-pooler.x
+DIRECT_URL=postgres://postgres.gdblkhmwqytkzmyqttak:07ex7DZbW6YSsjFl@aws-1-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require
 POSTGRES_PRISMA_URL=postgres://postgres.gdblkhmwqytkzmyqttak:07ex7DZbW6YSsjFl@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require&pgbouncer=true
 POSTGRES_URL_NON_POOLING=postgres://postgres.gdblkhmwqytkzmyqttak:07ex7DZbW6YSsjFl@aws-1-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require
 ```
