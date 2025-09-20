@@ -12,17 +12,25 @@ NEXTAUTH_SECRET=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
 
 ### 🗄️ Database (Supabase)
 ```
-DATABASE_URL=postgresql://postgres.fglvnmdjvsuqjicefddg:Desiree2205.01@aws-0-us-east-1.pooler.supabase.com:6543/postgres
-POSTGRES_PRISMA_URL=postgresql://postgres.fglvnmdjvsuqjicefddg:Desiree2205.01@aws-0-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connect_timeout=15
-POSTGRES_URL_NON_POOLING=postgresql://postgres.fglvnmdjvsuqjicefddg:Desiree2205.01@aws-0-us-east-1.pooler.supabase.com:5432/postgres
+DATABASE_URL=postgres://postgres.gdblkhmwqytkzmyqttak:07ex7DZbW6YSsjFl@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require&supa=base-pooler.x
+POSTGRES_PRISMA_URL=postgres://postgres.gdblkhmwqytkzmyqttak:07ex7DZbW6YSsjFl@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require&pgbouncer=true
+POSTGRES_URL_NON_POOLING=postgres://postgres.gdblkhmwqytkzmyqttak:07ex7DZbW6YSsjFl@aws-1-sa-east-1.pooler.supabase.com:5432/postgres?sslmode=require
 ```
 
 ### ☁️ Supabase
 ```
-SUPABASE_URL=https://fglvnmdjvsuqjicefddg.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbHZubWRqdnN1cWppY2VmZGRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc4ODcxMTIsImV4cCI6MjA3MzQ2MzExMn0.QoRdOCG4ERj2M2pRG8RBVTxWZ7EFBhsF4ymgR3DO0qw
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZnbHZubWRqdnN1cWppY2VmZGRnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Nzg4NzExMiwiZXhwIjoyMDczNDYzMTEyfQ.QoRdOCG4ERj2M2pRG8RBVTxWZ7EFBhsF4ymgR3DO0qw
-SUPABASE_JWT_SECRET=Desiree2205.01
+SUPABASE_URL=https://gdblkhmwqytkzmyqttak.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYmxraG13cXl0a3pteXF0dGFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzMDY5NzMsImV4cCI6MjA3Mzg4Mjk3M30.acPGfvOmDC4HnSAAgu7mPF1ftTj4XNyi32JhF3Kuet0
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYmxraG13cXl0a3pteXF0dGFrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1ODMwNjk3MywiZXhwIjoyMDczODgyOTczfQ.0GILTpyL-nKugFF6wS07_lgFm7Rw1EZVbmewdb_cMmA
+SUPABASE_JWT_SECRET=j+Tgu3BGtw4Com/Q+DQzkNyBZSK42R0Ytg1LTdF8i6ZseM89s9iPfcDGnLt+VOy2EmiXegRNKmX024nYG8Ni5g==
+```
+
+### 🔧 Variáveis Adicionais do Postgres
+```
+POSTGRES_USER=postgres
+POSTGRES_HOST=db.gdblkhmwqytkzmyqttak.supabase.co
+POSTGRES_PASSWORD=07ex7DZbW6YSsjFl
+POSTGRES_DATABASE=postgres
 ```
 
 ### 📧 Email (SMTP)
